@@ -1,10 +1,15 @@
 # RSBdev Project Starter
 Projeto base que serve como base para a criação e atualização do generator utilizando yeoman.
+
 Este projeto possui dois modulos, são eles:
-  - backend :   
-    * Possui toda a arquitetura de autenticação e de serviços de regra de negócios da aplicação
- - frontend :   
-    * Possui toda a arquitetura de interface de usuário (UI)
+
+#### backend :
+
+ - Possui toda a arquitetura de autenticação e de serviços de regra de negócios da aplicação
+    
+#### frontend :
+
+ - Possui toda a arquitetura de interface de usuário (UI)
 
 # Tecnologias Utilizadas
 
