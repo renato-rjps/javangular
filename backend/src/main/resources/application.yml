@@ -1,0 +1,51 @@
+# config context path to "/" by setting an empty string
+server:
+  servlet:
+    context-path:
+  port: ${port:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        
+spring:
+
+  # JACKSON
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+      
+  datasource:
+    ## H2
+    url: jdbc:h2:mem:rsbdev;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    driverClassName: org.h2.Driver
+
+  jpa:
+    database: H2
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+      use-new-id-generator-mappings: true
+    properties:
+      dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console     
+      
+jwt:
+  header: Authorization
+  secret: jwtSecret
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh
+      
+#logging:
+#  level:
+#    org.springframework:
+#      security: DEBUG
