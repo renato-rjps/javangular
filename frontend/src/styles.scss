@@ -1,0 +1,57 @@
+@import "app/theme/scss/color/darkTheme";
+@import "~bootstrap/scss/bootstrap";
+
+html, body {
+    height: 100%;
+}
+
+body {
+    color: #212529;
+    font-size: 0.95rem;
+}
+
+/*
+ * Content
+ */
+
+[role="main"] {
+  padding-top: 48px; /* Space for fixed navbar */
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  font-weight: bold; 
+  font-size: 18px;
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+  color: #fff;
+  background-color: #EDEDED;
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+/*
+ * Utilities
+ */
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+

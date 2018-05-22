@@ -1,5 +1,7 @@
 package br.com.rsbdev.starter.config;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,70 +28,75 @@ import br.com.rsbdev.starter.security.jwt.JwtAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
-public class SecurityConfiguration {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	/**
-	 * Configuração do spring security.
-	 * 
-	 * @author Renato
-	 */
-	@Configuration
-	public static class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-		
-		  @Autowired
-		    private JwtAuthenticationEntryPoint unauthorizedHandler;
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-		@Autowired
-		private UserDetailsService userDetailsService;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-		@Autowired
-		public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-			authenticationManagerBuilder.userDetailsService(this.userDetailsService).passwordEncoder(passwordEncoder());
-		}
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-		@Bean
-		public PasswordEncoder passwordEncoder() {
-			return new BCryptPasswordEncoder();
-		}
+	@Bean
+	public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
+		return new JwtAuthenticationFilter();
+	}
+	
+	@Autowired
+    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+                .userDetailsService(this.userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
 
-		@Bean
-		public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
-			return new JwtAuthenticationFilter();
-		}
-
-		@Override
-		public void configure(WebSecurity web) throws Exception {
-			// Ignore security filter for assets
-			web.ignoring()
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		// Ignore security filter for assets
+		web.ignoring()
 				.antMatchers(
-					"/public/**",					
-					"/**/*.html", 
-					"/**/*.{png,jpg,jpeg,svg.ico}", 
-					"/**/*.css",
-					"/**/*.js");
-		}
+						"/public/**", 
+						"/**/*.html", 
+						"/**/*.css", 
+						"/**/*.js",
+						"/**/*.{png,jpg,jpeg,svg.ico}");
+	}
 
-		@Override
-		protected void configure(HttpSecurity httpSecurity) throws Exception {
-			httpSecurity
-				.csrf()
-					.disable()
-				.exceptionHandling()
-					.authenticationEntryPoint(unauthorizedHandler)
-			.and()
-				.sessionManagement()
-					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-				.authorizeRequests()
-					.antMatchers("/","/swagger**","/actuator**","/h2-console/**","/v2/api-docs**","/auth/**").permitAll()
-					.anyRequest().authenticated();
-
-			// Custom JWT Authentication Filter
-			httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-
-			// Disable page caching
-			httpSecurity.headers().frameOptions().disable().cacheControl().disable();
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity
+		
+			// Não é necessário utilizar CSRF
+			.csrf().disable()
 			
-		}
+			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
+			
+			// Configura estratégia de sessão stateless
+			.sessionManagement().sessionCreationPolicy(STATELESS).and()
+			
+			// Processamento das requests
+			.authorizeRequests()
+			
+			// Permite solicitação anônima de recursos
+			.antMatchers(
+					"/", 
+					"/auth/**",
+					"/swagger**", 
+					"/actuator*/**", 
+					"/h2-console/**", 
+					"/v2/api-docs**"
+			).permitAll()
+			
+			// Bloqueia requests não authenticadas
+			.anyRequest().authenticated().and()
+
+			// Filtro customizado para autenticação via JWT
+			.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
+			
+			// Desabilita cache de página
+			.headers().frameOptions().disable().cacheControl().disable();
 	}
 }

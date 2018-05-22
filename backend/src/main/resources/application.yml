@@ -3,10 +3,14 @@ server:
   servlet:
     context-path:
   port: ${port:8080}
-
+  
 management:
   endpoints:
     web:
+      cors:
+        allowed-origins: '*'
+        allowed-methods: '*'
+        allowed-headers: '*'
       exposure:
         include: '*'
         

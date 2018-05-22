@@ -62,7 +62,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					HIDE_CREDENTIALS, jwtUser.getAuthorities());
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			chain.doFilter(request, response);
+			//chain.doFilter(request, response);
+			//return;
 
 		} catch (InvalidTokenException exception) {
 			SecurityContextHolder.clearContext();
