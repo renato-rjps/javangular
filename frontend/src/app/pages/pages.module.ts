@@ -1,28 +1,17 @@
-import { NgModule } from "@angular/core";
-import { DashboardComponent } from "./dashboard/dashboard.component";
-import { UsersComponent } from "./users/users.component";
-import { ActuatorComponent } from "./actuator/actuator.component";
-import { AuthModule } from "../auth/auth.module";
-import { HttpClientModule } from "@angular/common/http";
-import { BrowserModule } from "@angular/platform-browser";
-import { PagesComponent } from "./pages.component";
-import { AppRoutingModule } from "../app.routing.module";
-import { PagesRoutingModule } from "./pages.routing.module";
+import { CommonModule } from "@angular/common";
 import { ThemeModule } from "../theme/theme.module";
+import { PagesRoutingModule } from "./pages.routing.module";
+import { PagesComponent } from "./pages.component";
+import { NgModule } from "@angular/core";
+
 
 @NgModule({
   declarations: [
-    DashboardComponent,
-    UsersComponent,
-    ActuatorComponent,
     PagesComponent, 
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     ThemeModule,
-    AppRoutingModule,
-    AuthModule,
-    HttpClientModule,
     PagesRoutingModule
   ]
 })

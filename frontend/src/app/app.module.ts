@@ -17,7 +17,6 @@ import { ThemeModule } from "./theme/theme.module";
     BrowserModule,
     AuthModule,
     AppRoutingModule,
-    PagesModule,
     ThemeModule,
     HttpClientModule
   ],

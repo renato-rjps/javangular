@@ -1,0 +1,20 @@
+/*
+* Navbar
+*/
+.navbar-brand {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+    font-size: 1rem;
+    font-weight: bold; 
+    font-size: 18px;
+}
+  
+.navbar .form-control {
+    padding: .75rem 1rem;
+    border-width: 0;
+    border-radius: 0;
+}
+
+#btn-logout {
+    cursor: pointer;
+}

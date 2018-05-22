@@ -25,14 +25,13 @@ export class AuthService {
 
 
     initAuthListener() {
-        // Evento que fica escutando o ststus da authenticação
+        // Evento que fica escutando o status da authenticação
         this.authState.subscribe(() => {
             const token = this.tokenService.getToken();
             if (token) {
                 this.isAuthenticated = true;
                 this.router.navigate(['/pages/dashboard']);
             } else {
-                console.log('NOT AUTHENTICATED');
                 this.isAuthenticated = false;
                 this.router.navigate(['/login']);
             }
