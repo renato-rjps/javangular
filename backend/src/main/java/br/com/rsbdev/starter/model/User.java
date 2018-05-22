@@ -17,7 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.rsbdev.starter.security.jwt.JwtUser;
+import br.com.rsbdev.starter.security.JwtUser;
 import br.com.rsbdev.starter.util.DateUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

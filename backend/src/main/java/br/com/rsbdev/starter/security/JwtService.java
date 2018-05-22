@@ -1,4 +1,4 @@
-package br.com.rsbdev.starter.security.jwt;
+package br.com.rsbdev.starter.security;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -6,7 +6,10 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import br.com.rsbdev.starter.security.exception.InvalidTokenException;
@@ -22,16 +25,17 @@ import io.jsonwebtoken.Jwts;
  */
 @Component
 public class JwtService implements Serializable {
-
-	private static final long JWT_EXPIRATION_TIME = 30l; // 30 dias;
-
-	private static final String JWT_SECRET = "OssAplicationJWTSecret";
-
 	private static final long serialVersionUID = -3301605591108950415L;
 
 	// TODO: Deverá ser colocada a identificação do Dipositivo que
 	// esta tentando autenticar
 	static final String CLAIM_KEY_AUDIENCE = "audience";
+	
+	@Value("${jwt.expiration}")
+	private long jwtExpirationTime; // 30 dias;
+	
+	@Value("${jwt.secret}")
+	private String jwtSecret;
 
 	/**
 	 * Generate a JWT.
@@ -43,13 +47,18 @@ public class JwtService implements Serializable {
 	 */
 	public String generateToken(JwtUser user) {
 		Instant created = DateUtil.instantNow();
-		Instant expirationDate = created.plus(JWT_EXPIRATION_TIME, DAYS);
+		Instant expirationDate = created.plus(jwtExpirationTime, DAYS);
+		
+		Map<String, Object> claims = new HashMap<String, Object>();
+		claims.put("user", user);
+
 		return Jwts
 				.builder()
+				.setClaims(claims)
 				.setSubject(user.getUsername())
 				.setIssuedAt(Date.from(created))
 				.setExpiration(Date.from(expirationDate))
-				.signWith(HS512, JWT_SECRET)
+				.signWith(HS512, jwtSecret)
 				.compact();
 	}
 
@@ -115,7 +124,7 @@ public class JwtService implements Serializable {
 	}
 
 	private Claims getClaimsFromToken(String token) {
-		return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
+		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 	}
 
 	private Boolean isTokenValid(final String token, final JwtUser user) {

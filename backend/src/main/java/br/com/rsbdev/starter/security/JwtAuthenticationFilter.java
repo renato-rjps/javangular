@@ -1,4 +1,4 @@
-package br.com.rsbdev.starter.security.jwt;
+package br.com.rsbdev.starter.security;
 
 import java.io.IOException;
 
@@ -58,23 +58,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			jwtTokenUtil.validateToken(token, jwtUser);
 
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(jwtUser,
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+					jwtUser,
 					HIDE_CREDENTIALS, jwtUser.getAuthorities());
+			
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+			
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			//chain.doFilter(request, response);
-			//return;
 
 		} catch (InvalidTokenException exception) {
 			SecurityContextHolder.clearContext();
-			response.sendError(HttpServletResponse.SC_CONFLICT, "Teste");
-			// TODO: Tratar erros de autenticação
-			// ResponseWrapper responseWrapper = new ResponseWrapper(response, "UTF-8");
-			// response.setHeader(HttpHeaders.CONTENT_TYPE,
-			// MediaType.APPLICATION_JSON_UTF8_VALUE);
-			// response.getWriter().write("Authentication Error");
-			return;
+			response.sendError(HttpServletResponse.SC_CONFLICT, "Ocorreu um erro na autenticação JWT");
 		}
+		
 		chain.doFilter(request, response);
 	}
 

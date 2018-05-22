@@ -1,4 +1,4 @@
-package br.com.rsbdev.starter.security.jwt;
+package br.com.rsbdev.starter.security;
 
 import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.beans.factory.annotation.Autowired;

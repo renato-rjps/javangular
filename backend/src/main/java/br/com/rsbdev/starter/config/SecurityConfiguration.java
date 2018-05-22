@@ -16,8 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import br.com.rsbdev.starter.security.jwt.JwtAuthenticationEntryPoint;
-import br.com.rsbdev.starter.security.jwt.JwtAuthenticationFilter;
+import br.com.rsbdev.starter.security.JwtAuthenticationEntryPoint;
+import br.com.rsbdev.starter.security.JwtAuthenticationFilter;
 
 /**
  * Main Security Configuration class

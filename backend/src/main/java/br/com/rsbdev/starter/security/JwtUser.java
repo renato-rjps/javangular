@@ -1,4 +1,4 @@
-package br.com.rsbdev.starter.security.jwt;
+package br.com.rsbdev.starter.security;
 
 import java.time.Instant;
 

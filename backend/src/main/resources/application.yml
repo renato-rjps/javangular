@@ -41,13 +41,8 @@ spring:
       path: /h2-console     
       
 jwt:
-  header: Authorization
   secret: jwtSecret
-  expiration: 604800
-  route:
-    authentication:
-      path: auth
-      refresh: refresh
+  expiration: 30 #Em dias
       
 #logging:
 #  level:

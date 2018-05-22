@@ -1,4 +1,4 @@
-package br.com.rsbdev.starter.security.jwt;
+package br.com.rsbdev.starter.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
