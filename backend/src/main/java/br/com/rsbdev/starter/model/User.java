@@ -48,6 +48,11 @@ public class User extends BaseEntity implements JwtUser {
 	@NotNull
 	@Size(min = 4, max = 255)
 	private String name;
+	
+	@Column(length = 20)
+	@NotNull
+	@Size(min = 4, max = 20)
+	private String tenant;
 
 	@Column(length = 50, unique = true)
 	@NotNull

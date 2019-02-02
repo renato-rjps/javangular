@@ -74,6 +74,20 @@ public class JwtService implements Serializable {
 		
 		return claims != null ? claims.getSubject() : null;
 	}
+	
+	/**
+	 * Retrieves the tenant id from token.
+	 * 
+	 * @param token
+	 *            the JWT
+	 * @return the subject.
+	 */
+	@SuppressWarnings("unchecked")
+	public String getTokenTenant(String token) {
+		Claims claims = getClaimsFromToken(token);
+		HashMap<String, String> userProperties = claims.get("user", HashMap.class);
+		return userProperties.get("tenant");
+	}
 
 	/**
 	 * Retrieves the token created date.
@@ -123,7 +137,7 @@ public class JwtService implements Serializable {
 		}
 	}
 
-	private Claims getClaimsFromToken(String token) {
+	public Claims getClaimsFromToken(String token) {
 		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 	}
 

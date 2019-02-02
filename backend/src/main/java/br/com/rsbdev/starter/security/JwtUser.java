@@ -34,5 +34,12 @@ public interface JwtUser extends UserDetails {
 	 * @return
 	 */
 	Instant getLastPasswordResetDate();
+	
+	/**
+	 * User Tenant Id
+	 * 
+	 * @return
+	 */
+	String getTenant();
 
 }
